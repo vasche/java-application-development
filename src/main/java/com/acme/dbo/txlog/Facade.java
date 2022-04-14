@@ -18,7 +18,7 @@ public class Facade {
     }
 
     public static void log(String message) {
-        print(decorate(STRING_STRING, message));
+        print(decorate(STRING_PREFIX, message));
     }
 
     public static void log(boolean message) {
