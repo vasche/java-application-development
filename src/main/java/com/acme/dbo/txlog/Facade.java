@@ -2,7 +2,6 @@ package com.acme.dbo.txlog;
 
 import java.util.Objects;
 
-import static com.acme.dbo.txlog.decorator.PrefixDecorator.*;
 import static com.acme.dbo.txlog.decorator.PrefixDecorator.decorate;
 import static com.acme.dbo.txlog.printer.ConsolePrinter.print;
 
