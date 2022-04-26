@@ -37,10 +37,10 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
 
         //region then
-        assertSysoutContains("str 1" + System.lineSeparator());
-        assertSysoutContains("3" + System.lineSeparator());
-        assertSysoutContains("str 2" + System.lineSeparator());
-        assertSysoutContains("0" + System.lineSeparator());
+        assertSysoutContains("str 1");
+        assertSysoutContains("3");
+        assertSysoutContains("str 2");
+        assertSysoutContains("0");
         //endregion
     }
 
@@ -57,7 +57,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Facade.log("str 3");
         Facade.log("str 3");
         Facade.flush();
-//        Facade.log(0);
         //endregion
 
         //region then
@@ -70,22 +69,26 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
     }
 
-/*
+
     @Test
     public void shouldLogCorrectlyIntegerOverflowWhenSequentIntegers() {
         //region when
         Facade.log("str 1");
         Facade.log(10);
         Facade.log(Integer.MAX_VALUE);
+        Facade.log(-1);
+        Facade.log(Integer.MAX_VALUE);
         Facade.log("str 2");
         Facade.log(0);
+        Facade.flush();
         //endregion
 
         //region then
         assertSysoutContains("str 1");
         assertSysoutContains("10");
+        assertSysoutContains(Integer.MAX_VALUE - 1 + System.lineSeparator());
         assertSysoutContains(Integer.MAX_VALUE + System.lineSeparator());
-        assertSysoutContains("str 2");
+        assertSysoutContains("str 2" + System.lineSeparator());
         assertSysoutContains("0");
         //endregion
     }
@@ -109,6 +112,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
         //endregion
     }
-*/
+
 
 }

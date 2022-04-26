@@ -3,61 +3,67 @@ package com.acme.dbo.txlog;
 import java.util.Objects;
 
 import static com.acme.dbo.txlog.decorator.PrefixDecorator.*;
+import static com.acme.dbo.txlog.decorator.PrefixDecorator.decorate;
 import static com.acme.dbo.txlog.printer.ConsolePrinter.print;
 
 /**
  * my super logger
  */
 public class Facade {
-    private static int intMessage = 0;
-    private static int stringCounter = 0;
-    private static Object prevValue = null;
-    private static String currentLine = null;
+    private static final String INT_STATE = "int";
+    private static final String BYTE_STATE = "byte";
+    private static final String CHAR_STATE = "char";
+    private static final String STRING_STATE = "string";
+    private static final String BOOLEAN_STATE = "boolean";
+    private static final String OBJECT_STATE = "Object";
 
+    private static int intAggregator = 0;
+    private static int byteAggregator = 0;
+    private static int stringCounter = 0;
+    private static String stateMessage = null;
+    private static String state = "";
+    private static String prevMessage = null;
 
     public static void log(int message) {
-        if (prevValue instanceof String) {
+        if (!INT_STATE.equals(state) || (intAggregator + message) < Integer.min(message,intAggregator)){
             flush();
         }
-        intMessage = intMessage + message;
-        currentLine = decorate(intMessage);
-        prevValue = message;
+        state = INT_STATE;
+        intAggregator += message;
+        stateMessage = decorate(intAggregator);
     }
 
     public static void log(byte message) {
-        print(decorate(message));
-//        prevValue = message;
-//        if (message == Byte.MAX_VALUE) {
-//            flush();
-//            intMessage = message;
-//        } else {
-//            intMessage = intMessage + message;
-//        }
+        if (!BYTE_STATE.equals(state) || message + byteAggregator > Byte.MAX_VALUE) {
+            flush();
+        }
+        state = BYTE_STATE;
+        byteAggregator += message;
+        stateMessage = decorate(byteAggregator);
     }
 
     public static void log(char message) {
+        state = CHAR_STATE;
         print(decorate(message));
     }
 
     public static void log(String message) {
+        if (!STRING_STATE.equals(state) || !Objects.equals(prevMessage, message)) {
+            flush();
+            stateMessage = decorate(message);
+        }
+        state = STRING_STATE;
         stringCounter++;
-        if (prevValue instanceof Integer) {
-            flush();
-        }
-        if (prevValue != null || Objects.equals(message, prevValue)) {
-            currentLine = decorate(message + " (x" + stringCounter + ")");
-        } else {
-            currentLine = decorate(message);
-            flush();
-        }
-        prevValue = message;
+        prevMessage = message;
     }
 
     public static void log(boolean message) {
+        state = BOOLEAN_STATE;
         print(decorate(message));
     }
 
     public static void log(Object message) {
+        state = OBJECT_STATE;
         print(decorate(message));
     }
 
@@ -65,10 +71,42 @@ public class Facade {
      * Sets flush to true and print out the message
      */
     public static void flush() {
-        print(currentLine);
-        intMessage = 0;
+        switch (state){
+            case STRING_STATE:
+                if(stringCounter > 1) {
+                    stateMessage = decorate(String.format("%s (x%s)",prevMessage, stringCounter));
+                } else {
+                    stateMessage = decorate(prevMessage);
+                }
+                stringFlush();
+                print(stateMessage);
+                break;
+            case INT_STATE:
+                intFlush();
+                print(stateMessage);
+                break;
+            case BYTE_STATE:
+                byteAggregator = 0;
+                print(stateMessage);
+            default:
+                intFlush();
+                stringFlush();
+                byteFlush();
+                break;
+        }
+
+    }
+
+    private static void byteFlush() {
+        byteAggregator = 0;
+    }
+
+    private static void intFlush() {
+        intAggregator = 0;
+    }
+
+    private static void stringFlush() {
         stringCounter = 0;
-        currentLine = null;
-        prevValue = null;
+        prevMessage = null;
     }
 }
