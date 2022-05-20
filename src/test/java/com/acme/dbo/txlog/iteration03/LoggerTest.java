@@ -20,8 +20,8 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
     //endregion
 
-    /*
-    TODO: implement Logger solution to match specification as tests
+/*
+//    TODO: implement Logger solution to match specification as tests
 
     @Test
     public void shouldLogIntegersArray() throws IOException {
@@ -36,6 +36,8 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
     }
 
+*/
+/*
     @Test
     public void shouldLogIntegersMatrix() throws IOException {
         //region when
@@ -74,10 +76,14 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogStringsWithOneMethodCall() throws IOException {
         //region when
         Facade.log("str1", "string 2", "str 3");
+        Facade.flush();
         //endregion
 
         //region then
-        assertSysoutContains("str1\nstring 2\nstr 3");
+//        assertSysoutContains("str1\nstring 2\nstr 3");
+        assertSysoutContains("str1" + System.lineSeparator());
+        assertSysoutContains("string 2" + System.lineSeparator());
+        assertSysoutContains("str 3" + System.lineSeparator());
         //endregion
     }
 
@@ -85,6 +91,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogIntegersWithOneMethodCall() throws IOException {
         //region when
         Facade.log(-1, 0, 1, 3);
+        Facade.flush();
         //endregion
 
         //region then
@@ -99,6 +106,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         Facade.log("str");
         Facade.log(Integer.MAX_VALUE - 10);
         Facade.log(11);
+        Facade.flush();
         //endregion
 
         //region then
@@ -108,6 +116,5 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains(11);
         //endregion
     }
-
-    */
+*/
 }
