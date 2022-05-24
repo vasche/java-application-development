@@ -3,7 +3,7 @@ package com.acme.dbo.txlog.message;
 public class StringMessage implements Message {
     private static final String PREFIX = "string: ";
     private final String body;
-    Integer counter;
+    private Integer counter;
 
     public StringMessage(String body) {
         this.body = body;

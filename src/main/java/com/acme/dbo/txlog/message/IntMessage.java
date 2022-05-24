@@ -4,7 +4,7 @@ package com.acme.dbo.txlog.message;
 public class IntMessage implements Message{
     private static final String PREFIX = "primitive: ";
     private final Integer body;
-    Integer counter;
+    private Integer counter;
 
     public IntMessage(Integer body) {
         this.body = body;
