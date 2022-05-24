@@ -31,11 +31,7 @@ public class StringMessage implements Message {
             return false;
         }
 
-        if (message.getMessage().equals(this.getMessage())) {
-            return true;
-        } else {
-            return false;
-        }
+        return (message instanceof StringMessage && message.getMessage().equals(getMessage()));
     }
 
     @Override
