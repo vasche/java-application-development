@@ -1,12 +1,15 @@
 package com.acme.dbo.txlog;
 
 import com.acme.dbo.txlog.message.Message;
-import com.acme.dbo.txlog.saver.ConsoleSaver;
 import com.acme.dbo.txlog.saver.Saver;
 
 public class LogService {
     private static Message currentMessage = null;
-    private static final Saver saver = new ConsoleSaver();
+    private final Saver saver;
+
+    public LogService(Saver saver) {
+        this.saver = saver;
+    }
 
     public void log(Message message) {
         if (message.shouldAgrregate(currentMessage)) {
