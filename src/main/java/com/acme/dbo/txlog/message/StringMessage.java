@@ -1,45 +1,34 @@
 package com.acme.dbo.txlog.message;
 
-public class StringMessage implements Message {
+public class StringMessage extends PrefixDecoratingMessage {
     private static final String PREFIX = "string: ";
     private final String body;
-    private Integer counter;
+    private final Integer counter;
 
     public StringMessage(String body) {
+        super(PREFIX);
         this.body = body;
         this.counter = 1;
     }
 
-    @Override
-    public Integer getValue() {
-        return counter;
+    public StringMessage(String body, Integer counter) {
+        super(PREFIX);
+        this.body = body;
+        this.counter = counter;
     }
 
     @Override
-    public String getMessage() {
-        return body;
-    }
-
-    @Override
-    public void aggregate(Message message) {
-        counter += message.getValue();
+    public Message aggregate(Message message) {
+        return new StringMessage(body, counter + 1);
     }
 
     @Override
     public boolean shouldAgrregate(Message message) {
-        if (message == null ) {
-            return false;
-        }
-
-        return (message instanceof StringMessage && message.getMessage().equals(getMessage()));
+        return super.shouldAgrregate(message) && (message instanceof StringMessage && ((StringMessage) message).body.equals(body));
     }
 
     @Override
     public String decorate() {
-        if (counter > 1) {
-            return String.format("%s%s (x%s)", PREFIX, this.getMessage(), counter);
-        } else {
-            return PREFIX + this.getMessage();
-        }
+        return this.counter > 1 ? super.decorate(String.format("%s (x%s)", body, counter)) : super.decorate(body);
     }
 }

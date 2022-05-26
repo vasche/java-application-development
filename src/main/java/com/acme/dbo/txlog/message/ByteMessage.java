@@ -1,34 +1,26 @@
 package com.acme.dbo.txlog.message;
 
-
-public class IntMessage extends PrefixDecoratingMessage {
+public class ByteMessage extends PrefixDecoratingMessage {
     private static final String PREFIX = "primitive: ";
-    private final Integer body;
+    private final Byte body;
 
-    /**
-     *  Class constructor.
-     * @param body Integer as message
-     */
-    public IntMessage(Integer body) {
+    public ByteMessage(Byte body) {
         super(PREFIX);
         this.body = body;
     }
 
     @Override
     public Message aggregate(Message message) {
-        return new IntMessage(body + ((IntMessage)message).body) ;
+        return new ByteMessage((byte) (body + ((ByteMessage) message).body));
     }
 
     @Override
     public boolean shouldAgrregate(Message message) {
-        return super.shouldAgrregate(message) && message instanceof IntMessage;
+        return super.shouldAgrregate(message) &&  message instanceof ByteMessage;
     }
 
     @Override
     public String decorate() {
         return super.decorate(String.valueOf(body));
     }
-
 }
-
-

@@ -1,10 +1,29 @@
 package com.acme.dbo.txlog.message;
 
+/**
+ * Message interface
+ * @author vasche
+ */
 public interface Message {
-    Integer getValue();
-    String getMessage();
-    void aggregate(Message message);
-    boolean shouldAgrregate(Message message);
-    String decorate();
 
+    /**
+     *
+     * @param message Message to compare
+     * @return brand new aggregated Message object
+     */
+    Message aggregate(Message message);
+
+    /**
+     *
+     * @param message Message to aggregate
+     * @return boolean
+     */
+    boolean shouldAgrregate(Message message);
+
+    /**
+     *
+     * Decorate message
+     * @return String
+     */
+    String decorate();
 }

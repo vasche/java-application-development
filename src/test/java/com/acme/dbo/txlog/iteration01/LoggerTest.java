@@ -41,7 +41,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutEquals("primitive: 1" + System.lineSeparator() + "primitive: 0" + System.lineSeparator() + "primitive: -1" + System.lineSeparator());
         //endregion
     }
-/*
+
     @Test
     public void shouldLogByte() throws IOException {
         //region when
@@ -60,7 +60,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("-1");
         //endregion
     }
-
+/*
     @Test
     public void shouldLogChar() throws IOException {
         //region when
