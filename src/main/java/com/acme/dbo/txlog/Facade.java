@@ -3,14 +3,19 @@ package com.acme.dbo.txlog;
 import com.acme.dbo.txlog.message.ByteMessage;
 import com.acme.dbo.txlog.message.IntMessage;
 import com.acme.dbo.txlog.message.StringMessage;
-import com.acme.dbo.txlog.saver.ConsoleSaver;
+import com.acme.dbo.txlog.saver.FileSaver;
 
 /**
  * my super logger
  * @author vasche
  */
 public class Facade {
-    private static final LogService service = new LogService(new ConsoleSaver());
+
+    private Facade() {
+        throw new IllegalStateException("Facade class");
+    }
+
+    private static final LogService service = new LogService(new FileSaver("console.log"));
 
     public static void log(int message) {
         service.log(new IntMessage(message));

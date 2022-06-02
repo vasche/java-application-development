@@ -24,11 +24,16 @@ public class StringMessage extends PrefixDecoratingMessage {
 
     @Override
     public boolean shouldAgrregate(Message message) {
-        return super.shouldAgrregate(message) && (message instanceof StringMessage && ((StringMessage) message).body.equals(body));
+        return super.shouldAgrregate(message)
+                && (message instanceof StringMessage
+                && ((StringMessage) message).body.equals(body));
     }
 
     @Override
     public String decorate() {
-        return this.counter > 1 ? super.decorate(String.format("%s (x%s)", body, counter)) : super.decorate(body);
+        if (this.counter > 1) {
+            return super.decorate(String.format("%s (x%s)", body, counter));
+        }
+        return super.decorate(body);
     }
 }

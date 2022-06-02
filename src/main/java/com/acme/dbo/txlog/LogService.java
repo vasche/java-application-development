@@ -4,6 +4,8 @@ import com.acme.dbo.txlog.message.InitMessage;
 import com.acme.dbo.txlog.message.Message;
 import com.acme.dbo.txlog.saver.Saver;
 
+import java.io.IOException;
+
 /**
  * LogService
  */
@@ -25,7 +27,11 @@ public class LogService {
     }
 
     public void flush() {
-        saver.save(currentMessage.decorate());
+        try {
+            saver.save(currentMessage.decorate());
+        } catch (SaverDefaultException e) {
+            throw new LogException(e.getMessage(), e);
+        }
         currentMessage = new InitMessage();
     }
 

@@ -1,5 +1,7 @@
 package com.acme.dbo.txlog.saver;
 
+import com.acme.dbo.txlog.SaverDefaultException;
+
 public class FileSaver implements Saver {
     private final String filename;
 
@@ -8,7 +10,7 @@ public class FileSaver implements Saver {
     }
 
     @Override
-    public void save(String message) {
-        System.out.println("message saved to file");
+    public void save(String message) throws SaverDefaultException {
+        throw new SaverDefaultException("Something went wrong: Unable to write message to file " + filename );
     }
 }
